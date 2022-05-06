@@ -18,34 +18,34 @@ db.commit()
 
 
 def start_action():
-    print("""Choose you action 
-        1.Log out
-        2.Create new account
-        3.Create task
-        4.Delete task
-        5.Change task
-        6.Check the list of tasks
+    print("""Виберіть дію 
+        1. Вийти
+         2.Створити новий обліковий запис
+         3.Створити завдання
+         4.Видалити завдання
+         5.Змінити завдання
+         6.Перевірте список завдань
         """)
-    user_input = input("For choosing you action print number of him: ")
+    user_input = input("Для вибору дії надрукуйте його номер: ")
     return user_input
 
 
 def reg():
-    user_login = input("Login: ")
-    user_password = input("Password: ")
+    user_login = input("Логін: ")
+    user_password = input("Пароль: ")
     user_task = ''
     sql.execute(f"SELECT task FROM tasks WHERE task = '{user_task}'")
     if sql.fetchone() is None:
         sql.execute(f"INSERT INTO tasks VALUES (?)", (user_task,))
         db.commit()
-        print("Task field created")
+        print("Поле завдання створено")
     sql.execute(f"SELECT login FROM users WHERE login = '{user_login}'")
     if sql.fetchone() is None:
         sql.execute(f"INSERT INTO users VALUES (?, ?)", (user_login, user_password))
         db.commit()
-        print("Registration done!")
+        print("Реєстрацію завершено успішно!")
     else:
-        print("Same account already created!")
+        print("Той самий обліковий запис уже створено!")
     for value in sql.execute("SELECT * FROM users"):
         print(value)
     for value in sql.execute("SELECT * FROM tasks"):
@@ -53,34 +53,34 @@ def reg():
 
 
 def login():
-    user_login = input("Login: ")
-    user_password = input("Password: ")
+    user_login = input("Логін: ")
+    user_password = input("Пароль: ")
 
     sql.execute(f"SELECT login FROM users WHERE login = '{user_login}'")
     if sql.fetchone() is None:
-        print("Wrong login or password!")
-        user_action = input("Do you wanna create new account? (print 'y' or 'n')")
+        print("Неправильний логін або пароль!")
+        user_action = input("Ви хочете створити новий обліковий запис? (print 'y' or 'n')")
         if user_action == 'y':
             reg()
         else:
             False
     else:
-        print("Login done!")
+        print("Вхід виконано!")
         return start_action()
 
 
 def task_action(action):
     if action == "add":
-        user_task = input("Print the task name: ")
+        user_task = input("Надрукуйте назву завдання: ")
         sql.execute(f"INSERT INTO tasks VALUES (?)", (user_task,))
         db.commit()
     elif action == "delete":
-        user_task = input("Print the task name that you need to delete: ")
+        user_task = input("Надрукуйте назву завдання, яке потрібно видалити: ")
         sql.execute(f"DELETE FROM tasks WHERE task = '{user_task}'")
         db.commit()
-        print("Task deleted")
+        print("Завдання видалено")
     elif action == "change":
-        user_task = input("Print the task name: ")
+        user_task = input("Надрукуйте назву завдання: ")
         sql.execute(f"UPDATE tasks SET task = '{user_task}'")
         db.commit()
     elif action == "check":
